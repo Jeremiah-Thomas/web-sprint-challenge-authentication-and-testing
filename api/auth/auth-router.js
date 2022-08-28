@@ -25,7 +25,7 @@ router.post("/register", validateRegister, (req, res) => {
 
   user.password = hash;
 
-  Users.add(user).then((user) => {
+  Users.add(user).then(([user]) => {
     res.status(201).json(user);
   });
 
