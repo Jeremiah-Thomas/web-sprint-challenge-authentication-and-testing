@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
+  console.log(req.headers);
   if (req.headers.authorization == null) {
     res.status(403).json({ message: "token required" });
     return;
@@ -12,10 +13,10 @@ module.exports = (req, res, next) => {
       return;
     }
 
-    req.decodedToken = decodedTokennext();
+    req.decodedToken = decodedToken;
+    next();
   });
 
-  next();
   /*
     IMPLEMENT
 
