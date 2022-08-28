@@ -1,9 +1,18 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const Users = require("./user-model");
 
 const validateRegister = require("../middleware/validRegister");
+const validateLogin = require("../middleware/validateLogin");
+
+function generateJwt(user) {
+  const payload = {
+    subject: user.id,
+    username: user.username,
+  };
+}
 
 router.post("/register", validateRegister, (req, res) => {
   let user = req.body;
@@ -43,8 +52,17 @@ router.post("/register", validateRegister, (req, res) => {
   */
 });
 
-router.post("/login", (req, res) => {
-  res.end("implemment");
+router.post("/login", validateLogin, (req, res) => {
+  Users.getUsers()
+    .where("username", req.body.username)
+    .then(([user]) => {
+      if (user && bcrypt.compareSync(req.body.password, user.password)) {
+        const token = generateJwt(user);
+        res.status(200).json({ message: `welcome, ${user.username}`, token });
+      } else {
+        res.status(401).json({ message: "invalid credentials" });
+      }
+    });
 
   /*
     IMPLEMENT
