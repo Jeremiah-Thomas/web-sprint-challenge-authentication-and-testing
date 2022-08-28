@@ -44,7 +44,8 @@ router.post("/register", validateRegister, (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  res.end("implement login, please!");
+  res.end("implemment");
+
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
