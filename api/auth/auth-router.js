@@ -12,6 +12,10 @@ function generateJwt(user) {
     subject: user.id,
     username: user.username,
   };
+
+  const config = { expiresIn: "1d" };
+
+  return jwt.sign(payload, "jwtpass", config);
 }
 
 router.post("/register", validateRegister, (req, res) => {
@@ -58,7 +62,10 @@ router.post("/login", validateLogin, (req, res) => {
     .then(([user]) => {
       if (user && bcrypt.compareSync(req.body.password, user.password)) {
         const token = generateJwt(user);
-        res.status(200).json({ message: `welcome, ${user.username}`, token });
+        console.log(token);
+        res
+          .status(200)
+          .json({ message: `welcome, ${user.username}`, token: token });
       } else {
         res.status(401).json({ message: "invalid credentials" });
       }

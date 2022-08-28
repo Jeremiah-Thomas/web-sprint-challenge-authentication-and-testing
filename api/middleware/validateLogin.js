@@ -5,11 +5,7 @@ module.exports = (req, res, next) => {
     res.status(400).json({ message: "username and password required" });
   } else {
     const matches = db("users").where("usename", req.body.username);
-    if (
-      matches.length < 1 ||
-      req.body.password == null ||
-      req.body.username == null
-    ) {
+    if (matches.length < 1) {
       res.status(400).json({ message: "invalid credentials" });
     } else {
       next();
